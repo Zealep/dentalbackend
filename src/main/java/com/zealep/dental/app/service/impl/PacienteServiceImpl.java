@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zealep.dental.app.model.entities.Paciente;
 import com.zealep.dental.app.model.repository.PacienteRepository;
 import com.zealep.dental.app.service.IPacienteService;
+import com.zealep.dental.app.util.Constantes;
 
 @Service("pacienteService")
 public class PacienteServiceImpl implements IPacienteService{
@@ -39,6 +40,7 @@ public class PacienteServiceImpl implements IPacienteService{
 	@Override
 	@Transactional
 	public Paciente save(Paciente p) {
+		p.setEstado(Constantes.ESTADO_ACTIVO);
 		return pacienteRepository.save(p);
 	}
 
@@ -51,7 +53,7 @@ public class PacienteServiceImpl implements IPacienteService{
 	@Override
 	@Transactional
 	public void deleteById(Long id) {
-		pacienteRepository.deleteLogicById(id);
+		pacienteRepository.deleteLogicById(Constantes.ESTADO_INACTIVO,id);
 		
 	}
 

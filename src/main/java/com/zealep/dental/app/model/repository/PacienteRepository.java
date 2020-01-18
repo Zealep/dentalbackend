@@ -14,7 +14,7 @@ public interface PacienteRepository extends CrudRepository<Paciente,Long>{
 	public List<Paciente> findAllActives();
 
 	@Modifying
-	@Query("update Paciente p set p.estado='I' where p.idPaciente = ?1 ")
-	public void deleteLogicById(Long id);
+	@Query("update Paciente p set p.estado=?1 where p.idPaciente=?2 ")
+	public void deleteLogicById(String estado,Long id);
 	
 }

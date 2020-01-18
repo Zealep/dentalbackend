@@ -52,6 +52,10 @@ public class Paciente implements Serializable{
 	@Column(name="direccion")
 	private String direccion;
 	
+	@JsonSerialize(using=ToStringSerializer.class)
+	@Column(name="fecha_inicio")
+	private LocalDate fechaInicio;
+	
 	@Column(name="lugar_procedencia")
 	private String lugarProcedencia;
 	
