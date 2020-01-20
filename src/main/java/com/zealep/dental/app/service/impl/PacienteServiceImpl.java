@@ -57,4 +57,10 @@ public class PacienteServiceImpl implements IPacienteService{
 		
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public boolean isExist(Paciente p) {
+		return findById(p.getIdPaciente())!=null;
+	}
+
 }

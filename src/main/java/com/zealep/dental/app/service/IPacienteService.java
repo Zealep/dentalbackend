@@ -18,4 +18,6 @@ public interface IPacienteService {
 	
 	void deleteById(Long id);
 	
+	boolean isExist(Paciente p);
+	
 }
