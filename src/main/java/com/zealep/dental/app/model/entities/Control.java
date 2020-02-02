@@ -39,6 +39,9 @@ public class Control implements Serializable{
 	
 	@Column(name="comentarios")
 	private String comentarios;
+
+	@Column(name = "estado")
+	private String estado;
 	
 	public Long getIdControl() {
 		return idControl;
@@ -72,8 +75,11 @@ public class Control implements Serializable{
 		this.comentarios = comentarios;
 	}
 
-	
-	
-	
-	
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }

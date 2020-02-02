@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.zealep.dental.app.model.entities.Ingreso;
+import org.springframework.data.repository.CrudRepository;
 
-public interface IngresoRepository {
+public interface IngresoRepository extends CrudRepository<Ingreso,Long> {
 
 	@Query("select i from Ingreso i where i.estado='A'")
 	public List<Ingreso> findAllActives();

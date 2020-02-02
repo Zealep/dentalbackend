@@ -37,6 +37,9 @@ public class Egreso implements Serializable{
 	@Column(name="costo")
 	private double costo;
 
+	@Column(name="estado")
+	private String estado;
+
 	public Long getIdEgreso() {
 		return idEgreso;
 	}
@@ -68,7 +71,12 @@ public class Egreso implements Serializable{
 	public void setCosto(double costo) {
 		this.costo = costo;
 	}
-	
-	
 
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }

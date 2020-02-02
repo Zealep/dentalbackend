@@ -25,7 +25,7 @@ public class Ingreso implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_ingreso")
-	private Long idEgreso;
+	private Long idIngreso;
 	
 	@JsonSerialize(using=ToStringSerializer.class)
 	@Column(name="fecha_ingreso")
@@ -37,12 +37,15 @@ public class Ingreso implements Serializable{
 	@Column(name="monto")
 	private double monto;
 
-	public Long getIdEgreso() {
-		return idEgreso;
+	@Column(name="estado")
+	private String estado;
+
+	public Long getIdIngreso() {
+		return idIngreso;
 	}
 
-	public void setIdEgreso(Long idEgreso) {
-		this.idEgreso = idEgreso;
+	public void setIdIngreso(Long idIngreso) {
+		this.idIngreso = idIngreso;
 	}
 
 	public String getDescripcion() {
@@ -69,7 +72,11 @@ public class Ingreso implements Serializable{
 		this.monto = monto;
 	}
 
-	
-	
+	public String getEstado() {
+		return estado;
+	}
 
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }

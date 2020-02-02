@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.zealep.dental.app.model.entities.Egreso;
+import org.springframework.data.repository.CrudRepository;
 
-public interface EgresoRepository {
+public interface EgresoRepository extends CrudRepository<Egreso,Long> {
 
 	@Query("select e from Egreso e where e.estado='A'")
 	public List<Egreso> findAllActives();
