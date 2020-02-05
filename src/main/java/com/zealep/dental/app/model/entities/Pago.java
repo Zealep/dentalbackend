@@ -44,11 +44,12 @@ public class Pago implements Serializable{
 	
 	@Column(name="nro_comprobante")
 	private String nroComprobante;
-	
-	
+
 	@Column(name="comentarios")
 	private String comentarios;
-	
+
+	@Column(name="estado")
+	private String estado;
 	
 	public Long getIdPago() {
 		return idPago;
@@ -91,8 +92,28 @@ public class Pago implements Serializable{
 		this.comentarios = comentarios;
 	}
 
-	
-	
-	
-	
+
+	public String getTipoPago() {
+		return tipoPago;
+	}
+
+	public void setTipoPago(String tipoPago) {
+		this.tipoPago = tipoPago;
+	}
+
+	public String getNroComprobante() {
+		return nroComprobante;
+	}
+
+	public void setNroComprobante(String nroComprobante) {
+		this.nroComprobante = nroComprobante;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }

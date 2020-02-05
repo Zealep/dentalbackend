@@ -10,8 +10,8 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface EgresoRepository extends CrudRepository<Egreso,Long> {
 
-	@Query("select e from Egreso e where e.estado='A'")
-	public List<Egreso> findAllActives();
+	@Query("select e from Egreso e where e.estado=?1")
+	public List<Egreso> findAllActives(String active);
 
 	@Modifying
 	@Query("update Egreso e set e.estado=?1 where e.idEgreso=?2 ")

@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface ProcedimientoRepository extends CrudRepository<Procedimiento, Long> {
 
-    @Query("select e from Procedimiento e where e.estado='A'")
-    public List<Procedimiento> findAllActives();
+    @Query("select e from Procedimiento e where e.estado=?1")
+    public List<Procedimiento> findAllActives(String active);
 
     @Modifying
     @Query("update Procedimiento e set e.estado=?1 where e.idProcedimiento=?2 ")

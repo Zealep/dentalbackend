@@ -43,7 +43,6 @@ public class Archivo implements Serializable{
 		this.idImagen = idImagen;
 	}
 
-
 	public Imagen getImagen() {
 		return imagen;
 	}

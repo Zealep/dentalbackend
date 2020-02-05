@@ -10,8 +10,8 @@ import com.zealep.dental.app.model.entities.Doctor;
 
 public interface DoctorRepository extends CrudRepository<Doctor, Long>{
 
-	@Query("select d from Doctor d where d.estado='A'")
-	List<Doctor> findAllActives();
+	@Query("select d from Doctor d where d.estado=?1 ")
+	List<Doctor> findAllActives(String active);
 
 	@Modifying
 	@Query("update Doctor d set d.estado=?1 where d.idDoctor=?2 ")

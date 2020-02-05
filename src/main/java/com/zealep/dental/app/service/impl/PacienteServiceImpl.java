@@ -34,7 +34,7 @@ public class PacienteServiceImpl implements IPacienteService{
 	@Override
 	@Transactional(readOnly=true)
 	public List<Paciente> findAllActives() {
-		return pacienteRepository.findAllActives();
+		return pacienteRepository.findAllActives(Constantes.ESTADO_ACTIVO);
 	}
 
 	@Override

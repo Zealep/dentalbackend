@@ -5,41 +5,50 @@ import com.zealep.dental.app.model.repository.EgresoRepository;
 import com.zealep.dental.app.service.IEgresoService;
 import com.zealep.dental.app.util.Constantes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service("egresoService")
 public class EgresoServiceImpl implements IEgresoService {
 
     @Autowired
     EgresoRepository egresoRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Egreso findById(Long id) {
         return egresoRepository.findById(id).orElse(null);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Egreso> findAll() {
         return (List<Egreso>) egresoRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Egreso> findAllActives() {
-        return egresoRepository.findAllActives();
+        return egresoRepository.findAllActives(Constantes.ESTADO_ACTIVO);
     }
 
     @Override
+    @Transactional
     public Egreso save(Egreso d) {
         d.setEstado(Constantes.ESTADO_ACTIVO);
         return egresoRepository.save(d);
     }
 
     @Override
+    @Transactional
     public Egreso update(Egreso d) {
         return egresoRepository.save(d);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         egresoRepository.deleteLogicById(Constantes.ESTADO_INACTIVO,id);
     }

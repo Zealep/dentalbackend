@@ -30,25 +30,28 @@ public class Imagen implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_imagen")
+	@Column(name = "id_imagen")
 	private Long idImagen;
 	
-	@OneToMany(mappedBy="imagen",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "imagen",cascade=CascadeType.ALL)
 	private List<Archivo> archivos;
 	
 	@ManyToOne
-	@JoinColumn(name="id_paciente")
+	@JoinColumn(name = "id_paciente")
 	private Paciente paciente;
 	
-	@Column(name="titulo")
+	@Column(name = "titulo")
 	private String titulo;
 	
 	@JsonSerialize(using=ToStringSerializer.class)
-	@Column(name="fecha")
+	@Column(name = "fecha")
 	private LocalDate fechaImagen;
 	
-	@Column(name="comentarios")
+	@Column(name = "comentarios")
 	private String comentarios;
+
+	@Column(name = "estado")
+	private String estado;
 	
 
 	public Long getIdImagen() {
@@ -100,6 +103,11 @@ public class Imagen implements Serializable{
 		this.archivos = archivos;
 	}
 
-	
-	
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 }
