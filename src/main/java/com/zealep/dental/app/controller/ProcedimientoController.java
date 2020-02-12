@@ -17,7 +17,7 @@ public class ProcedimientoController {
     @Autowired
     IProcedimientoService procedimientoService;
 
-    @GetMapping(value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Procedimiento>> listar() {
         try {
             return new ResponseEntity<List<Procedimiento>>(procedimientoService.findAllActives(), HttpStatus.OK);
@@ -37,7 +37,7 @@ public class ProcedimientoController {
 	}
 	 */
 
-    @GetMapping(value = "/buscar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Procedimiento> buscarPorId(@PathVariable Long id) {
         try {
             return new ResponseEntity<Procedimiento>(procedimientoService.findById(id), HttpStatus.OK);
@@ -46,7 +46,7 @@ public class ProcedimientoController {
         }
     }
 
-    @PostMapping(value = "/registrar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaApi> registrar(@RequestBody Procedimiento procedimiento) {
         try {
             Procedimiento p = procedimientoService.save(procedimiento);
@@ -57,7 +57,7 @@ public class ProcedimientoController {
 
     }
 
-    @PutMapping(value = "/actualizar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaApi> actualizar(@RequestBody Procedimiento procedimiento) {
         try {
             procedimientoService.update(procedimiento);
@@ -67,7 +67,7 @@ public class ProcedimientoController {
         }
     }
 
-    @DeleteMapping(value = "/eliminar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaApi> eliminar(@PathVariable long id) {
         try {
 

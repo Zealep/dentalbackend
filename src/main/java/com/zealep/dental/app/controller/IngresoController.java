@@ -16,7 +16,7 @@ public class IngresoController {
     @Autowired
     IIngresoService ingresoService;
 
-    @GetMapping(value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Ingreso>> listar() {
         try {
             return new ResponseEntity<List<Ingreso>>(ingresoService.findAllActives(), HttpStatus.OK);
@@ -36,7 +36,7 @@ public class IngresoController {
 	}
 	 */
 
-    @GetMapping(value = "/buscar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ingreso> buscarPorId(@PathVariable Long id) {
         try {
             return new ResponseEntity<Ingreso>(ingresoService.findById(id), HttpStatus.OK);
@@ -45,7 +45,7 @@ public class IngresoController {
         }
     }
 
-    @PostMapping(value = "/registrar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaApi> registrar(@RequestBody Ingreso ingreso) {
         try {
             Ingreso p = ingresoService.save(ingreso);
@@ -56,7 +56,7 @@ public class IngresoController {
 
     }
 
-    @PutMapping(value = "/actualizar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaApi> actualizar(@RequestBody Ingreso ingreso) {
         try {
             ingresoService.update(ingreso);
@@ -66,7 +66,7 @@ public class IngresoController {
         }
     }
 
-    @DeleteMapping(value = "/eliminar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaApi> eliminar(@PathVariable long id) {
         try {
 

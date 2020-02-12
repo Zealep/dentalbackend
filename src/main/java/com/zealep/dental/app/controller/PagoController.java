@@ -1,7 +1,7 @@
 package com.zealep.dental.app.controller;
 
-import com.zealep.dental.app.model.entities.Egreso;
-import com.zealep.dental.app.service.IEgresoService;
+import com.zealep.dental.app.model.entities.Pago;
+import com.zealep.dental.app.service.IPagoService;
 import com.zealep.dental.app.util.RespuestaApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public class EgresoController {
+public class PagoController {
 
     @Autowired
-    IEgresoService egresoService;
+    IPagoService pagoService;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Egreso>> listar() {
+    public ResponseEntity<List<Pago>> listar() {
         try {
-            return new ResponseEntity<List<Egreso>>(egresoService.findAllActives(), HttpStatus.OK);
+            return new ResponseEntity<List<Pago>>(pagoService.findAllActives(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -37,18 +37,18 @@ public class EgresoController {
 	 */
 
     @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Egreso> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Pago> buscarPorId(@PathVariable Long id) {
         try {
-            return new ResponseEntity<Egreso>(egresoService.findById(id), HttpStatus.OK);
+            return new ResponseEntity<Pago>(pagoService.findById(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RespuestaApi> registrar(@RequestBody Egreso egreso) {
+    public ResponseEntity<RespuestaApi> registrar(@RequestBody Pago pago) {
         try {
-            Egreso e = egresoService.save(egreso);
+            Pago p = pagoService.save(pago);
             return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -57,9 +57,9 @@ public class EgresoController {
     }
 
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RespuestaApi> actualizar(@RequestBody Egreso egreso) {
+    public ResponseEntity<RespuestaApi> actualizar(@RequestBody Pago pago) {
         try {
-            egresoService.update(egreso);
+            pagoService.update(pago);
             return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -69,8 +69,7 @@ public class EgresoController {
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaApi> eliminar(@PathVariable long id) {
         try {
-
-            egresoService.deleteById(id);
+            pagoService.deleteById(id);
             return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

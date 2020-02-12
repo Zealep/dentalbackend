@@ -26,7 +26,7 @@ public class PacienteController {
 	@Autowired
 	IPacienteService pacienteService;
 	
-	@GetMapping(value = "/listar", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Paciente>> listar() {
 		try {
 			return new ResponseEntity<List<Paciente>>(pacienteService.findAllActives(), HttpStatus.OK);
@@ -46,7 +46,7 @@ public class PacienteController {
 	}
 	 */
 	
-	@GetMapping(value = "/buscar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Paciente> buscarPorId(@PathVariable Long id) {
 		try {
 			return new ResponseEntity<Paciente>(pacienteService.findById(id), HttpStatus.OK);
@@ -55,7 +55,7 @@ public class PacienteController {
 		}
 	}
 
-	@PostMapping(value = "/registrar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RespuestaApi> registrar(@RequestBody Paciente paciente) {
 		try {
 			Paciente p = pacienteService.save(paciente);
@@ -66,7 +66,7 @@ public class PacienteController {
 
 	}
 
-	@PutMapping(value = "/actualizar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RespuestaApi> actualizar(@RequestBody Paciente paciente) {
 		try {
 			pacienteService.update(paciente);
@@ -76,7 +76,7 @@ public class PacienteController {
 		}
 	}
 
-	@DeleteMapping(value = "/eliminar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RespuestaApi> eliminar(@PathVariable long id) {
 		try {
 
