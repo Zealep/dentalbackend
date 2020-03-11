@@ -44,6 +44,7 @@ public class ProcedimientoServiceImpl implements IProcedimientoService {
     @Override
     @Transactional
     public Procedimiento update(Procedimiento d) {
+        d.setEstado(Constantes.ESTADO_ACTIVO);
         return procedimientoRepository.save(d);
     }
 
