@@ -1,14 +1,17 @@
 package com.zealep.dental.app.service.impl;
 
+import com.zealep.dental.app.model.dto.CitaDTO;
 import com.zealep.dental.app.model.entities.Cita;
 import com.zealep.dental.app.model.entities.Ingreso;
 import com.zealep.dental.app.model.repository.CitaRepository;
+import com.zealep.dental.app.model.repository.jdbc.CitaJdbcRepository;
 import com.zealep.dental.app.service.ICitaService;
 import com.zealep.dental.app.util.Constantes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service("citaService")
@@ -16,6 +19,9 @@ public class CitaServiceImpl implements ICitaService {
 
     @Autowired
     CitaRepository citaRepository;
+
+    @Autowired
+    CitaJdbcRepository citaJdbcRepository;
 
 
     @Override
@@ -33,7 +39,17 @@ public class CitaServiceImpl implements ICitaService {
     @Override
     @Transactional(readOnly = true)
     public List<Cita> findAllActives() {
-        return citaRepository.findAllActives(Constantes.ESTADO_INACTIVO);
+        return citaRepository.findAllActives(Constantes.ESTADO_ACTIVO);
+    }
+
+    @Override
+    public List<Cita> findByPaciente(Long id) {
+        return citaRepository.findByPaciente(id,Constantes.ESTADO_ACTIVO);
+    }
+
+    @Override
+    public List<CitaDTO> findByDate(LocalDate fecha) {
+        return citaJdbcRepository.obtenerCitasPorFecha(fecha);
     }
 
     @Override
@@ -46,6 +62,7 @@ public class CitaServiceImpl implements ICitaService {
     @Override
     @Transactional
     public Cita update(Cita c) {
+        c.setEstado(Constantes.ESTADO_ACTIVO);
         return citaRepository.save(c);
     }
 

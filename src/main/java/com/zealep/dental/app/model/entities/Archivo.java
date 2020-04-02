@@ -1,5 +1,7 @@
 package com.zealep.dental.app.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -23,8 +25,9 @@ public class Archivo implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_archivo")
-	private Long idImagen;
-	
+	private Long idArchivo;
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="id_imagen")
 	private Imagen imagen;
@@ -35,12 +38,12 @@ public class Archivo implements Serializable{
 	@Column(name="estado")
 	private String estado;
 
-	public Long getIdImagen() {
-		return idImagen;
+	public Long getIdArchivo() {
+		return idArchivo;
 	}
 
-	public void setIdImagen(Long idImagen) {
-		this.idImagen = idImagen;
+	public void setIdArchivo(Long idArchivo) {
+		this.idArchivo = idArchivo;
 	}
 
 	public Imagen getImagen() {

@@ -52,7 +52,7 @@ public class EgresoController {
     public ResponseEntity<RespuestaApi> registrar(@RequestBody Egreso egreso) {
         try {
             Egreso e = egresoService.save(egreso);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.CREATED);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", e.getIdEgreso(), ""), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -63,7 +63,7 @@ public class EgresoController {
     public ResponseEntity<RespuestaApi> actualizar(@RequestBody Egreso egreso) {
         try {
             egresoService.update(egreso);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", null, ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -74,7 +74,7 @@ public class EgresoController {
         try {
 
             egresoService.deleteById(id);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", null, ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

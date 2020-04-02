@@ -52,7 +52,7 @@ public class DoctorController {
 	public ResponseEntity<RespuestaApi> registrar(@RequestBody Doctor doctor) {
 		try {
 			Doctor d = doctorService.save(doctor);
-			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.CREATED);
+			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", d.getIdDoctor(), ""), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -63,7 +63,7 @@ public class DoctorController {
 	public ResponseEntity<RespuestaApi> actualizar(@RequestBody Doctor doctor) {
 		try {
 			doctorService.update(doctor);
-			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -73,7 +73,7 @@ public class DoctorController {
 	public ResponseEntity<RespuestaApi> eliminar(@PathVariable long id) {
 		try {
 			doctorService.deleteById(id);
-			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

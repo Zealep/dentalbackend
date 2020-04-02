@@ -23,6 +23,11 @@ public class OrtodonciaServiceImpl implements IOrtodonciaService {
     }
 
     @Override
+    public Ortodoncia findByTratamiento(Long id) {
+        return ortodonciaRepository.findByTratamiento(id,Constantes.ESTADO_ACTIVO);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<Ortodoncia> findAll() {
         return (List<Ortodoncia>) ortodonciaRepository.findAll();

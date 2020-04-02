@@ -44,6 +44,7 @@ public class DoctorServiceImpl implements IDoctorService {
     @Override
     @Transactional
     public Doctor update(Doctor d) {
+        d.setEstado(Constantes.ESTADO_ACTIVO);
         return doctorRepository.save(d);
     }
 

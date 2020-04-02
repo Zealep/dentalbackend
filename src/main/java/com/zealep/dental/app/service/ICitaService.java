@@ -1,7 +1,10 @@
 package com.zealep.dental.app.service;
 
+import com.zealep.dental.app.model.dto.CitaDTO;
 import com.zealep.dental.app.model.entities.Cita;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface ICitaService {
@@ -11,6 +14,10 @@ public interface ICitaService {
     List<Cita> findAll();
 
     List<Cita> findAllActives();
+
+    List<Cita> findByPaciente(Long id);
+
+    List<CitaDTO> findByDate(LocalDate fecha);
 
     Cita save(Cita c);
 

@@ -13,6 +13,8 @@ public interface IControlService {
 
     List<Control> findAllActives();
 
+    List<Control> findByPaciente(Long idPaciene);
+
     Control save(Control c);
 
     Control update(Control c);

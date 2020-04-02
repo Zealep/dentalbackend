@@ -10,9 +10,12 @@ import java.util.List;
 public interface CitaRepository extends CrudRepository<Cita,Long> {
 
     @Modifying
-    @Query("update Cita c set c.estado=?1 where c.idCita=?2 ")
-    public void changeStatus(String estado,Long id);
+    @Query("update Cita c set c.etapa=?1 where c.idCita=?2 ")
+    public void changeStatus(String etapa,Long id);
 
-    @Query("select c from Cita c where c.estado <> ?1 ")
-    public List<Cita> findAllActives(String inactivo);
+    @Query("select c from Cita c where c.estado = ?1 ")
+    public List<Cita> findAllActives(String estado);
+
+    @Query("select c from Cita c where c.paciente.idPaciente = ?1 and c.estado = ?2 ")
+    public List<Cita> findByPaciente(Long id,String estado);
 }

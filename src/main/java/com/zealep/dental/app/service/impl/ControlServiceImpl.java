@@ -31,7 +31,13 @@ public class ControlServiceImpl implements IControlService {
     @Override
     @Transactional(readOnly = true)
     public List<Control> findAllActives() {
-        return controlRepository.findAllActives(Constantes.ESTADO_INACTIVO);
+        return controlRepository.findAllActives(Constantes.ESTADO_ACTIVO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Control> findByPaciente(Long idPaciente) {
+        return controlRepository.findByPaciente(idPaciente,Constantes.ESTADO_ACTIVO);
     }
 
     @Override
@@ -44,13 +50,14 @@ public class ControlServiceImpl implements IControlService {
     @Override
     @Transactional
     public Control update(Control c) {
+        c.setEstado(Constantes.ESTADO_ACTIVO);
         return controlRepository.save(c);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        controlRepository.deleteById(id);
+        controlRepository.deleteLogicById(Constantes.ESTADO_INACTIVO,id);
     }
 
     @Override

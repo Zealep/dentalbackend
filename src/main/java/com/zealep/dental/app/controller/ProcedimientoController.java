@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/procedimiento")
+@CrossOrigin
 public class ProcedimientoController {
 
     @Autowired
@@ -53,7 +54,7 @@ public class ProcedimientoController {
     public ResponseEntity<RespuestaApi> registrar(@RequestBody Procedimiento procedimiento) {
         try {
             Procedimiento p = procedimientoService.save(procedimiento);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.CREATED);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", p.getIdProcedimiento(),""), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -64,7 +65,7 @@ public class ProcedimientoController {
     public ResponseEntity<RespuestaApi> actualizar(@RequestBody Procedimiento procedimiento) {
         try {
             procedimientoService.update(procedimiento);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -75,7 +76,7 @@ public class ProcedimientoController {
         try {
 
             procedimientoService.deleteById(id);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

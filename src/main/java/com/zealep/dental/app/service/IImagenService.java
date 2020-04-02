@@ -1,6 +1,7 @@
 package com.zealep.dental.app.service;
 
 import com.zealep.dental.app.model.entities.Imagen;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,7 +13,9 @@ public interface IImagenService {
 
     List<Imagen> findAllActives();
 
-    Imagen save(Imagen i);
+    List<Imagen> findByPaciente(Long id);
+
+    Imagen save(Imagen i, MultipartFile file);
 
     Imagen update(Imagen i);
 

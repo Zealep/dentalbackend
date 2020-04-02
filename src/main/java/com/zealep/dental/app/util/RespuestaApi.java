@@ -7,12 +7,13 @@ public class RespuestaApi{
 	private String idToken;
 	private String refreshToken;
 	private String sessionId;
+	private Long idEntity;
 	
 	private Object body;
 	
 	public RespuestaApi() {}
 	
-	public RespuestaApi(String status, Object body) {
+	public RespuestaApi(String status,Long idEntity, Object body) {
 		this.status = status;
 		this.body = body;
 	}
@@ -60,5 +61,13 @@ public class RespuestaApi{
 
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
+	}
+
+	public Long getIdEntity() {
+		return idEntity;
+	}
+
+	public void setIdEntity(Long idEntity) {
+		this.idEntity = idEntity;
 	}
 }

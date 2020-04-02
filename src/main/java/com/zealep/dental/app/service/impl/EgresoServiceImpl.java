@@ -44,6 +44,7 @@ public class EgresoServiceImpl implements IEgresoService {
     @Override
     @Transactional
     public Egreso update(Egreso d) {
+        d.setEstado(Constantes.ESTADO_ACTIVO);
         return egresoRepository.save(d);
     }
 

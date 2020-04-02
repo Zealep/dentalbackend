@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.zealep.dental.app.model.entities.Paciente;
 import com.zealep.dental.app.service.IPacienteService;
 import com.zealep.dental.app.util.RespuestaApi;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
@@ -53,7 +54,7 @@ public class PacienteController {
 	public ResponseEntity<RespuestaApi> registrar(@RequestBody Paciente paciente) {
 		try {
 			Paciente p = pacienteService.save(paciente);
-			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.CREATED);
+			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",p.getIdPaciente(), ""), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -64,7 +65,7 @@ public class PacienteController {
 	public ResponseEntity<RespuestaApi> actualizar(@RequestBody Paciente paciente) {
 		try {
 			pacienteService.update(paciente);
-			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", null,""), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -75,15 +76,15 @@ public class PacienteController {
 		try {
 
 			pacienteService.deleteById(id);
-			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK" ,null,""), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	/*
-	@PostMapping(value = "/obtenerFoto/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public ResponseEntity<byte[]> obtenerFoto(@PathVariable int id){
+
+	@GetMapping(value = "/obtenerFoto/{id}",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public ResponseEntity<byte[]> obtenerFoto(@PathVariable Long id){
 		byte[] data = null;
 		try {
 			Paciente p = pacienteService.findById(id);
@@ -91,13 +92,27 @@ public class PacienteController {
 			if(urlPath!=null) {
 			    data = pacienteService.obtenerFoto(urlPath);
 			}
-			
+			return new ResponseEntity<byte[]>(data, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<byte[]>(data, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<byte[]>(data, HttpStatus.OK);
+
+	}
+
+
+	@PostMapping(value = "/subirFoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<RespuestaApi> subirFoto(@RequestParam("file") MultipartFile file, @RequestParam("idPaciente") Long idPaciente){
+		try {
+			pacienteService.uploadFoto(file,idPaciente);
+			return new ResponseEntity<RespuestaApi>(HttpStatus.OK);
+		}
+		catch (Exception e){
+			return new ResponseEntity<RespuestaApi>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+
 	}
 	
-	*/
+
 	
 }

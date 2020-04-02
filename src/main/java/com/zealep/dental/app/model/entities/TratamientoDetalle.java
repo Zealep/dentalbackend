@@ -34,6 +34,9 @@ public class TratamientoDetalle {
 	
 	@Column(name="cantidad")
 	private int cantidad;
+
+	@Column(name="total")
+	private double total;
 	
 	@Column(name="piezas")
 	private String piezas;
@@ -84,7 +87,10 @@ public class TratamientoDetalle {
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
-	
-	
-	
+	public double getTotal() {
+		return total;
+	}
+	public void setTotal(double total) {
+		this.total = total;
+	}
 }

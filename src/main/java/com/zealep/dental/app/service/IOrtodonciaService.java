@@ -8,6 +8,8 @@ public interface IOrtodonciaService {
 
     Ortodoncia findById(Long id);
 
+    Ortodoncia findByTratamiento(Long id);
+
     List<Ortodoncia> findAll();
 
     List<Ortodoncia> findAllActives();

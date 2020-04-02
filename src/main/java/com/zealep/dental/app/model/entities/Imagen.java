@@ -15,8 +15,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 
 @Entity
@@ -39,10 +41,15 @@ public class Imagen implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "id_paciente")
 	private Paciente paciente;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "id_doctor")
+	private Doctor doctor;
+
 	@Column(name = "titulo")
 	private String titulo;
-	
+
+	@JsonDeserialize(using= LocalDateDeserializer.class)
 	@JsonSerialize(using=ToStringSerializer.class)
 	@Column(name = "fecha")
 	private LocalDate fechaImagen;
@@ -109,5 +116,13 @@ public class Imagen implements Serializable{
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
 	}
 }

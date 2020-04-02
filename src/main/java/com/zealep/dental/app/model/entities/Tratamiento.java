@@ -46,7 +46,13 @@ public class Tratamiento implements Serializable{
 	@JsonSerialize(using=ToStringSerializer.class)
 	@Column(name="fecha_registro")
 	private LocalDate fechaRegistro;
-	
+
+	@Column(name="nombre")
+	private String nombre;
+
+	@Column(name="etapa")
+	private String etapa;
+
 	@Column(name="monto")
 	private double monto;
 	
@@ -145,8 +151,20 @@ public class Tratamiento implements Serializable{
 	public void setTratamientoDetalles(List<TratamientoDetalle> tratamientoDetalles) {
 		this.tratamientoDetalles = tratamientoDetalles;
 	}
-	
-	
-	
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getEtapa() {
+		return etapa;
+	}
+
+	public void setEtapa(String etapa) {
+		this.etapa = etapa;
+	}
 }

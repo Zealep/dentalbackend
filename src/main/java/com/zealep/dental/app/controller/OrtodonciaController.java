@@ -28,17 +28,6 @@ public class OrtodonciaController {
         }
     }
 
-	/*
-	@GetMapping(value = "/listarPageable", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<Paciente>> listarPagination(Pageable pageable) {
-		try {
-			return new ResponseEntity<Page<Paciente>>(pacienteService.listAllByPage(pageable), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	 */
-
     @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ortodoncia> buscarPorId(@PathVariable Long id) {
         try {
@@ -48,11 +37,20 @@ public class OrtodonciaController {
         }
     }
 
+    @GetMapping(value = "/findByTratamiento/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Ortodoncia> buscarPorTratamiento(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<Ortodoncia>(ortodonciaService.findByTratamiento(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RespuestaApi> registrar(@RequestBody Ortodoncia ortodoncia) {
         try {
             Ortodoncia o = ortodonciaService.save(ortodoncia);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.CREATED);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", o.getIdOrtodoncia(), ""), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -63,7 +61,7 @@ public class OrtodonciaController {
     public ResponseEntity<RespuestaApi> actualizar(@RequestBody Ortodoncia ortodoncia) {
         try {
             ortodonciaService.update(ortodoncia);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -73,7 +71,7 @@ public class OrtodonciaController {
     public ResponseEntity<RespuestaApi> eliminar(@PathVariable long id) {
         try {
             ortodonciaService.deleteById(id);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

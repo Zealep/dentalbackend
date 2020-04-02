@@ -2,13 +2,9 @@ package com.zealep.dental.app.model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -26,6 +22,9 @@ public class Paciente implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_paciente")
 	private Long idPaciente;
+
+	@Column(name="nro_historia",nullable = false)
+	private String nroHistoria;
 	
 	@Column(name="apellidos")
 	private String apellidos;
@@ -35,10 +34,7 @@ public class Paciente implements Serializable{
 	
 	@Column(name="dni")
 	private String dni;
-	
-	@Column(name="nro_historia")
-	private String nroHistoria;
-	
+
 	@JsonSerialize(using=ToStringSerializer.class)
 	@Column(name="fecha_nacimiento")
 	private LocalDate fechaNacimiento;
@@ -67,6 +63,13 @@ public class Paciente implements Serializable{
 	
 	@Column(name="estado")
 	private String estado;
+
+	@ManyToMany
+	@JoinTable(
+			name = "paciente_alerta",
+			joinColumns = @JoinColumn(name = "id_paciente"),
+			inverseJoinColumns = @JoinColumn(name = "id_alerta"))
+	Set<Alerta> alertas;
 
 	public Long getIdPaciente() {
 		return idPaciente;
@@ -171,7 +174,20 @@ public class Paciente implements Serializable{
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	
 
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Set<Alerta> getAlertas() {
+		return alertas;
+	}
+
+	public void setAlertas(Set<Alerta> alertas) {
+		this.alertas = alertas;
+	}
 }

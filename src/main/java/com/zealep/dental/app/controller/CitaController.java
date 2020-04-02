@@ -1,5 +1,6 @@
 package com.zealep.dental.app.controller;
 
+import com.zealep.dental.app.model.dto.CitaDTO;
 import com.zealep.dental.app.model.entities.Cita;
 import com.zealep.dental.app.service.ICitaService;
 import com.zealep.dental.app.service.ICitaService;
@@ -10,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CrossOrigin
@@ -29,16 +32,26 @@ public class CitaController {
         }
     }
 
-	/*
-	@GetMapping(value = "/listarPageable", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<Paciente>> listarPagination(Pageable pageable) {
-		try {
-			return new ResponseEntity<Page<Paciente>>(pacienteService.listAllByPage(pageable), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	 */
+    @GetMapping(value = "/list/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Cita>> listar(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<List<Cita>>(citaService.findAllActives(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/listByDate/{fecha}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CitaDTO>> listar(@PathVariable String fecha) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate localDate = LocalDate.parse(fecha, formatter);
+
+            return new ResponseEntity<List<CitaDTO>>(citaService.findByDate(localDate), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Cita> buscarPorId(@PathVariable Long id) {
@@ -53,7 +66,7 @@ public class CitaController {
     public ResponseEntity<RespuestaApi> registrar(@RequestBody Cita cita) {
         try {
             Cita c = citaService.save(cita);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.CREATED);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", c.getIdCita(),""), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -64,7 +77,7 @@ public class CitaController {
     public ResponseEntity<RespuestaApi> actualizar(@RequestBody Cita cita) {
         try {
             citaService.update(cita);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", null, ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -75,7 +88,7 @@ public class CitaController {
         try {
 
             citaService.deleteById(id);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

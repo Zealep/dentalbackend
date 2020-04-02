@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +16,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name="cita")
@@ -34,13 +43,21 @@ public class Cita implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="id_paciente")
 	private Paciente paciente;
-	
-	@JsonSerialize(using=ToStringSerializer.class)
+
+	@ManyToOne
+	@JoinColumn(name="id_doctor")
+	private Doctor doctor;
+
+	//@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using= ToStringSerializer.class)
 	@Column(name="fecha_hora")
 	private LocalDateTime fechaHora;
 	
 	@Column(name="asunto")
 	private String asunto;
+
+	@Column(name="etapa")
+	private String etapa;
 	
 	@Column(name="estado")
 	private String estado;
@@ -61,7 +78,13 @@ public class Cita implements Serializable{
 		this.paciente = paciente;
 	}
 
-	
+	public String getEtapa() {
+		return etapa;
+	}
+
+	public void setEtapa(String etapa) {
+		this.etapa = etapa;
+	}
 
 	public LocalDateTime getFechaHora() {
 		return fechaHora;
@@ -86,9 +109,12 @@ public class Cita implements Serializable{
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	
-	
-	
-	
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
 }

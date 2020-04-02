@@ -10,10 +10,13 @@ import java.util.List;
 
 public interface ControlRepository extends CrudRepository<Control,Long> {
 
+    @Query("select c from Control c where c.estado = ?1 ")
+    public List<Control> findAllActives(String activo);
+
+    @Query("select c from Control c where c.tratamiento.paciente.idPaciente=?1 and c.estado = ?2 ")
+    public List<Control> findByPaciente(Long idPaciente,String estado);
+
     @Modifying
     @Query("update Control c set c.estado=?1 where c.idControl=?2 ")
-    public void changeStatus(String estado,Long id);
-
-    @Query("select c from Cita c where c.estado <> ?1 ")
-    public List<Control> findAllActives(String inactivo);
+    void deleteLogicById(String estado,Long id);
 }

@@ -52,7 +52,7 @@ public class PagoController {
     public ResponseEntity<RespuestaApi> registrar(@RequestBody Pago pago) {
         try {
             Pago p = pagoService.save(pago);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.CREATED);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", p.getIdPago(), ""), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -63,7 +63,7 @@ public class PagoController {
     public ResponseEntity<RespuestaApi> actualizar(@RequestBody Pago pago) {
         try {
             pagoService.update(pago);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", null,""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -73,7 +73,7 @@ public class PagoController {
     public ResponseEntity<RespuestaApi> eliminar(@PathVariable long id) {
         try {
             pagoService.deleteById(id);
-            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", ""), HttpStatus.OK);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK", null,""), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

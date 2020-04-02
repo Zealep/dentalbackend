@@ -3,6 +3,7 @@ package com.zealep.dental.app.service;
 import java.util.List;
 
 import com.zealep.dental.app.model.entities.Paciente;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface IPacienteService {
 	
@@ -17,7 +18,11 @@ public interface IPacienteService {
 	Paciente update(Paciente p);
 	
 	void deleteById(Long id);
-	
+
 	boolean isExist(Paciente p);
+
+	byte[] obtenerFoto(String path);
+
+	String uploadFoto(MultipartFile file,Long id);
 	
 }

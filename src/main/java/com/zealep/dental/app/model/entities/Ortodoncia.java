@@ -46,7 +46,7 @@ public class Ortodoncia implements Serializable{
 	private int diaPagar;
 
 	@JsonSerialize(using=ToStringSerializer.class)
-	@Column(name="f_inst_backtes")
+	@Column(name="f_inst_brackets")
 	private LocalDate fechaInstaBrackets;
 	
 	@JsonSerialize(using=ToStringSerializer.class)
@@ -62,7 +62,7 @@ public class Ortodoncia implements Serializable{
 	private LocalDate fechaInstaAparato;
 	
 	@JsonSerialize(using=ToStringSerializer.class)
-	@Column(name="fecha_inicio_pago")
+	@Column(name="f_inicio_pago")
 	private LocalDate fechaInicioPago;
 	
 	@Column(name="estado")
