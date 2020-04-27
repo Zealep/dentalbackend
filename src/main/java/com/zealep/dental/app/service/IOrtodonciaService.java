@@ -21,4 +21,6 @@ public interface IOrtodonciaService {
     void deleteById(Long id);
 
     boolean isExist(Ortodoncia o);
+
+    List<Ortodoncia> findNewsOrtodoncia();
 }

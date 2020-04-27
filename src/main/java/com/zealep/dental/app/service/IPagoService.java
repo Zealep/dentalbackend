@@ -1,7 +1,9 @@
 package com.zealep.dental.app.service;
 
+import com.zealep.dental.app.model.dto.PagoTotalMesesDTO;
 import com.zealep.dental.app.model.entities.Pago;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IPagoService {
@@ -19,4 +21,12 @@ public interface IPagoService {
     void deleteById(Long id);
 
     boolean isExist(Pago p);
+
+    List<PagoTotalMesesDTO> findPagosTotalMeses();
+
+    Double findTotalPagosDia(LocalDate date);
+
+    Double findTotalPagosMes();
+
+    List<Pago> findByRangeDates(LocalDate inicio,LocalDate fin);
 }

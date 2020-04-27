@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service("ingresoService")
@@ -56,5 +57,22 @@ public class IngresoServiceImpl implements IIngresoService {
     @Override
     public boolean isExist(Ingreso d) {
         return findById(d.getIdIngreso())!=null;
+    }
+
+    @Override
+    public Double findIngresosDia(LocalDate date) {
+        Double result = ingresoRepository.findTotalIngresosDia(date,Constantes.ESTADO_ACTIVO);
+        return result == null ? 0 : result;
+    }
+
+    @Override
+    public Double findIngresosMes() {
+        Double result = ingresoRepository.findTotalIngresosMes(Constantes.ESTADO_ACTIVO);
+        return result == null ? 0 : result;
+    }
+
+    @Override
+    public List<Ingreso> findByRangeDates(LocalDate inicio, LocalDate fin) {
+        return ingresoRepository.findByRangeDates(inicio,fin,Constantes.ESTADO_ACTIVO);
     }
 }

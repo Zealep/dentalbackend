@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/ortodoncia")
 public class OrtodonciaController {
@@ -72,6 +71,15 @@ public class OrtodonciaController {
         try {
             ortodonciaService.deleteById(id);
             return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/news", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Ortodoncia>> findNewsOrtodoncias() {
+        try {
+            return new ResponseEntity<List<Ortodoncia>>(ortodonciaService.findNewsOrtodoncia(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

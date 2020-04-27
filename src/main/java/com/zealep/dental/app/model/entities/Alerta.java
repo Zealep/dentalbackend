@@ -1,5 +1,7 @@
 package com.zealep.dental.app.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -20,6 +22,7 @@ public class Alerta implements Serializable {
     @Column(name="estado")
     private String estado;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "alertas")
     Set<Paciente> pacientes;
 

@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/procedimiento")
-@CrossOrigin
 public class ProcedimientoController {
 
     @Autowired

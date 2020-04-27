@@ -18,4 +18,8 @@ public interface CitaRepository extends CrudRepository<Cita,Long> {
 
     @Query("select c from Cita c where c.paciente.idPaciente = ?1 and c.estado = ?2 ")
     public List<Cita> findByPaciente(Long id,String estado);
+
+    @Modifying
+    @Query("update Cita c set c.estado=?1 where c.idCita=?2 ")
+    public void deleteLogicById(String estado,Long id);
 }

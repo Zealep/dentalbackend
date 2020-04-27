@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service("egresoService")
@@ -57,5 +58,22 @@ public class EgresoServiceImpl implements IEgresoService {
     @Override
     public boolean isExist(Egreso d) {
         return findById(d.getIdEgreso())!=null;
+    }
+
+    @Override
+    public Double findEgresosDia(LocalDate date) {
+        Double result = egresoRepository.findTotalEgresosDia(date,Constantes.ESTADO_ACTIVO);
+        return result == null ? 0 : result;
+    }
+
+    @Override
+    public Double findEgresosMes() {
+        Double result = egresoRepository.findTotalEgresosMes(Constantes.ESTADO_ACTIVO);
+        return result == null ? 0 : result;
+    }
+
+    @Override
+    public List<Egreso> findByRangeDates(LocalDate inicio, LocalDate fin) {
+        return egresoRepository.findByRangeDates(inicio,fin,Constantes.ESTADO_ACTIVO);
     }
 }

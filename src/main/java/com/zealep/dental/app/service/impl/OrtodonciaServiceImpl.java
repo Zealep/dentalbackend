@@ -62,4 +62,10 @@ public class OrtodonciaServiceImpl implements IOrtodonciaService {
     public boolean isExist(Ortodoncia o) {
         return findById(o.getIdOrtodoncia())!=null;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Ortodoncia> findNewsOrtodoncia() {
+        return ortodonciaRepository.findNewsOrtodoncias();
+    }
 }

@@ -1,19 +1,32 @@
 package com.zealep.dental.app.service.impl;
 
 import com.zealep.dental.app.model.dto.PlanTratamientoDTO;
+import com.zealep.dental.app.model.dto.ProcedimientoDTO;
 import com.zealep.dental.app.model.dto.TratamientoPagarDTO;
 import com.zealep.dental.app.model.entities.Ortodoncia;
+import com.zealep.dental.app.model.entities.Procedimiento;
 import com.zealep.dental.app.model.entities.Tratamiento;
+import com.zealep.dental.app.model.entities.TratamientoDetalle;
 import com.zealep.dental.app.model.repository.OrtodonciaRepository;
 import com.zealep.dental.app.model.repository.TratamientoRepository;
 import com.zealep.dental.app.model.repository.jdbc.TratamientoJdbcRepository;
 import com.zealep.dental.app.service.ITratamientoService;
 import com.zealep.dental.app.util.Constantes;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("tratamientoService")
 public class TratamientoServiceImpl implements ITratamientoService {
@@ -126,5 +139,53 @@ public class TratamientoServiceImpl implements ITratamientoService {
         return tratamientoRepository.findByPacienteAndEtapa(id,etapa,Constantes.ESTADO_ACTIVO);
     }
 
+    @Override
+    public byte[] generarContrato(Tratamiento t) {
+
+        List<ProcedimientoDTO> detalles= obtenerProcedimientos(t);
+        Map<String,Object> p = new HashMap<>();
+        String logo="/images/jossdent.png";
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        p.put("apellidosPaciente",t.getPaciente().getApellidos());
+        p.put("nombresPaciente",t.getPaciente().getNombres());
+        p.put("fecha",date.format(df));
+        p.put("logo", this.getClass().getResourceAsStream(logo));
+        JasperReport report;
+        JasperPrint print;
+
+        try {
+
+            URL url = this.getClass().getResource("/reports/rpt_contrato.jasper");
+            report = (JasperReport) JRLoader.loadObject(url);
+            print = JasperFillManager.fillReport(report, p, new JRBeanCollectionDataSource(detalles));
+            return JasperExportManager.exportReportToPdf(print);
+
+
+        } catch (JRException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @Override
+    public List<Tratamiento> findNewsTratamientos() {
+        return tratamientoRepository.findNewsTratamientos();
+    }
+
+    private List<ProcedimientoDTO> obtenerProcedimientos(Tratamiento t){
+        List<ProcedimientoDTO> detalles = new ArrayList<>();
+        for (TratamientoDetalle detalle : t.getTratamientoDetalles()) {
+            ProcedimientoDTO p = new ProcedimientoDTO();
+            p.setProcedimiento(detalle.getProcedimiento().getNombre());
+            p.setCantidad(String.valueOf(detalle.getCantidad()));
+            p.setPrecio(String.valueOf(detalle.getPrecio()));
+            p.setTotal(String.valueOf(detalle.getTotal()));
+            detalles.add(p);
+        }
+        return detalles;
+
+    }
 
 }

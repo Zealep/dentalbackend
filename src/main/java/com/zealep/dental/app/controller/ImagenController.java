@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.print.attribute.standard.Media;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/imagen")
 public class ImagenController {

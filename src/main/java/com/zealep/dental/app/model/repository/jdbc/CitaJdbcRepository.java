@@ -1,8 +1,6 @@
 package com.zealep.dental.app.model.repository.jdbc;
 
 import com.zealep.dental.app.model.dto.CitaDTO;
-import com.zealep.dental.app.model.dto.TratamientoPagarDTO;
-import com.zealep.dental.app.model.entities.Cita;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -36,7 +34,8 @@ public class CitaJdbcRepository {
                 "from cita c " +
                 "inner join paciente p on p.id_paciente = c.id_paciente " +
                 "inner join doctor d on d.id_doctor = c.id_doctor " +
-                "where convert(c.fecha_hora,date) = convert(:fecha,date)";
+                "where convert(c.fecha_hora,date) = convert(:fecha,date)"+
+                "and c.estado='A'";
         return (List<CitaDTO>) jdbcTemplate.query(sql, parameters,new CitaDTOMapper());
     }
 

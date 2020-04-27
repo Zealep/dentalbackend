@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/tratamiento")
 public class TratamientoController {
@@ -125,4 +124,23 @@ public class TratamientoController {
         }
     }
 
+    @PostMapping(value = "/generarContrato", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> generarContrato(@RequestBody Tratamiento tratamiento){
+        byte[] data = null;
+        try {
+            data = tratamientoService.generarContrato(tratamiento);
+        } catch (Exception e) {
+            return new ResponseEntity<byte[]>(data, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<byte[]>(data, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/news", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Tratamiento>> findNewsTratamientos() {
+        try {
+            return new ResponseEntity<List<Tratamiento>>(tratamientoService.findNewsTratamientos(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

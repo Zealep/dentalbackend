@@ -26,4 +26,6 @@ public interface ICitaService {
     void deleteById(Long id);
 
     boolean isExist(Cita c);
+
+    void changeEtapa(Long id,String etapa);
 }

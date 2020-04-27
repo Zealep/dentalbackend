@@ -5,6 +5,7 @@ import com.zealep.dental.app.model.entities.Cita;
 import com.zealep.dental.app.service.ICitaService;
 import com.zealep.dental.app.service.ICitaService;
 import com.zealep.dental.app.util.RespuestaApi;
+import com.zealep.dental.app.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +16,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/cita")
 public class CitaController {
@@ -44,8 +44,7 @@ public class CitaController {
     @GetMapping(value = "/listByDate/{fecha}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CitaDTO>> listar(@PathVariable String fecha) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate localDate = LocalDate.parse(fecha, formatter);
+            LocalDate localDate = Util.convertStringToLocalDate(fecha);
 
             return new ResponseEntity<List<CitaDTO>>(citaService.findByDate(localDate), HttpStatus.OK);
         } catch (Exception e) {
@@ -90,6 +89,17 @@ public class CitaController {
             citaService.deleteById(id);
             return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
         } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/changeEtapa/{id}/{etapa}")
+    public ResponseEntity<RespuestaApi> changeEtapa(@PathVariable("id") Long id,@PathVariable("etapa")String etapa){
+        try {
+            citaService.changeEtapa(id,etapa);
+            return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null,""),HttpStatus.OK);
+        }
+        catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

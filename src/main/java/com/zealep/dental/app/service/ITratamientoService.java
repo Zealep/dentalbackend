@@ -31,4 +31,8 @@ public interface ITratamientoService {
     List<Tratamiento> findByPaciente(Long id);
 
     List<Tratamiento> findByPacienteAndEtapa(Long id,String etapa);
+
+    byte[] generarContrato(Tratamiento t);
+
+    List<Tratamiento> findNewsTratamientos();
 }

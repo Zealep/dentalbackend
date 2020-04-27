@@ -98,6 +98,6 @@ public class ImagenServiceImpl implements IImagenService {
 
     @Override
     public boolean isExist(Imagen i) {
-        return false;
+        return findById(i.getIdImagen())!=null;
     }
 }

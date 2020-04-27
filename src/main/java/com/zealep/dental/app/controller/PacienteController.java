@@ -1,8 +1,13 @@
 package com.zealep.dental.app.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.InputStreamSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +18,6 @@ import com.zealep.dental.app.service.IPacienteService;
 import com.zealep.dental.app.util.RespuestaApi;
 import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/paciente")
 public class PacienteController {
@@ -52,6 +56,17 @@ public class PacienteController {
 
 	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RespuestaApi> registrar(@RequestBody Paciente paciente) {
+		try {
+			Paciente p = pacienteService.save(paciente);
+			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",p.getIdPaciente(), ""), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
+	@PostMapping(value = "/saveAlertas", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RespuestaApi> registrarAlertas(@RequestBody Paciente paciente) {
 		try {
 			Paciente p = pacienteService.save(paciente);
 			return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",p.getIdPaciente(), ""), HttpStatus.CREATED);
@@ -111,6 +126,38 @@ public class PacienteController {
 
 		}
 
+	}
+
+	@GetMapping(value = "/export")
+	public ResponseEntity<InputStreamSource> exportarExcel(){
+		try {
+			ByteArrayInputStream stream = pacienteService.exportExcel();
+			HttpHeaders headers = new HttpHeaders();
+			headers.add(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=pacientes.xls");
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(stream));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+
+	@GetMapping(value = "/onomastico")
+	public ResponseEntity<List<Paciente>> buscarCumpleaños(){
+		try {
+			return new ResponseEntity<List<Paciente>>(pacienteService.buscarCumpleaños(),HttpStatus.OK);
+		}
+		catch (Exception e){
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping(value = "/nuevos")
+	public ResponseEntity<List<Paciente>> buscarPacientesNuevos(){
+		try {
+			return new ResponseEntity<List<Paciente>>(pacienteService.buscarPacientesNuevos(),HttpStatus.OK);
+		}
+		catch (Exception e){
+			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 

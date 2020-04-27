@@ -3,17 +3,20 @@ package com.zealep.dental.app.service.impl;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 
+import com.zealep.dental.app.util.ExcelUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,29 +87,34 @@ public class PacienteServiceImpl implements IPacienteService {
     @Override
     public byte[] obtenerFoto(String path) {
 
-        byte[] img;
+
         try {
-            BufferedImage bImage = ImageIO.read(new File(path));
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ImageIO.write(bImage, "jpg", bos);
-            img = bos.toByteArray();
+            if(path!=null && !path.isEmpty()){
+                BufferedImage bImage = ImageIO.read(new File(path));
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                ImageIO.write(bImage, "jpg", bos);
+                return bos.toByteArray();
+            }
+            else{
+                return null;
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-        return img;
+
     }
 
     @Override
     public String uploadFoto(MultipartFile file, Long id) {
 
-
         try {
-            String tipo = file.getContentType().substring(file.getContentType().indexOf("/")+1);
+            String tipo = file.getContentType().substring(file.getContentType().indexOf("/") + 1);
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             Paciente p = this.findById(id);
-            String name = p.getApellidos()+"-"+p.getNombres();
-            name = name.trim().replace(" ","-");
+            String name = p.getApellidos() + "-" + p.getNombres();
+            name = name.trim().replace(" ", "-");
             name = name + "." + tipo;
             String path = Constantes.URL_PATH_IMAGES + name;
             p.setFoto(path);
@@ -118,5 +126,67 @@ public class PacienteServiceImpl implements IPacienteService {
             return null;
         }
 
+    }
+
+    @Override
+    public ByteArrayInputStream exportExcel() throws Exception {
+        String[] headers = {"Id Paciente", "Nro Historia", "Apellidos", "Nombres", "DNI", "Fecha Nacimiento"
+                , "Telefono", "Celular", "Direccion", "Fecha Inicio", "Lugar Procedencia", "Email"};
+
+        Workbook workbook = new HSSFWorkbook();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        CellStyle headerStyle = ExcelUtil.headersStyle(workbook);
+        CellStyle rowStyle = ExcelUtil.rowsStyle(workbook);
+
+        Sheet sheet = workbook.createSheet("Pacientes");
+        sheet.setDefaultColumnWidth(20);
+
+
+        Row row = sheet.createRow(0);
+
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = row.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+
+        }
+
+        List<Paciente> pacientes = new ArrayList<>();
+        int initRow = 1;
+        for (Paciente p : findAllActives()) {
+            row = sheet.createRow(initRow);
+            row.setHeightInPoints((2*sheet.getDefaultRowHeightInPoints()));
+
+            ExcelUtil.createLongCell(p.getIdPaciente(),row,0,rowStyle);
+            ExcelUtil.createStringCell(p.getNroHistoria(),row,1,rowStyle);
+            ExcelUtil.createStringCell(p.getApellidos(),row,2,rowStyle);
+            ExcelUtil.createStringCell(p.getNombres(),row,3,rowStyle);
+            ExcelUtil.createStringCell(p.getDni(),row,4,rowStyle);
+            ExcelUtil.createStringCell(p.getFechaNacimiento()!=null?p.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyy")):"",row,5,rowStyle);
+            ExcelUtil.createStringCell(p.getTelefono(),row,6,rowStyle);
+            ExcelUtil.createStringCell(p.getCelular(),row,7,rowStyle);
+            ExcelUtil.createStringCell(p.getDireccion(),row,8,rowStyle);
+            ExcelUtil.createStringCell(p.getFechaInicio()!=null?p.getFechaInicio().format(DateTimeFormatter.ofPattern("dd/MM/yyy")):"",row,9,rowStyle);
+            ExcelUtil.createStringCell(p.getLugarProcedencia(),row,10,rowStyle);
+            ExcelUtil.createStringCell(p.getEmail(),row,11,rowStyle);
+
+            row.setRowStyle(rowStyle);
+            initRow++;
+        }
+
+        workbook.write(stream);
+        workbook.close();
+        return new ByteArrayInputStream(stream.toByteArray());
+    }
+
+    @Override
+    public List<Paciente> buscarCumpleaños() {
+        return pacienteRepository.findBirthdates();
+    }
+
+    @Override
+    public List<Paciente> buscarPacientesNuevos() {
+        return pacienteRepository.findNewsPacientes();
     }
 }

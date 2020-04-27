@@ -2,6 +2,7 @@ package com.zealep.dental.app.service;
 
 import com.zealep.dental.app.model.entities.Ingreso;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IIngresoService {
@@ -19,4 +20,10 @@ public interface IIngresoService {
     void deleteById(Long id);
 
     boolean isExist(Ingreso d);
+
+    Double findIngresosDia(LocalDate date);
+
+    Double findIngresosMes();
+
+    List<Ingreso> findByRangeDates(LocalDate inicio,LocalDate fin);
 }

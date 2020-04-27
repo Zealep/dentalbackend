@@ -19,4 +19,8 @@ public interface OrtodonciaRepository extends CrudRepository<Ortodoncia,Long> {
     @Modifying
     @Query("update Ortodoncia o set o.estado=?1 where o.idOrtodoncia=?2 ")
     public void deleteLogicById(String estado,Long id);
+
+    @Query(value = "select o.* from ortodoncia o inner join tratamiento t on o.id_tratamiento = t.id_tratamiento " +
+            "where t.fecha_registro >= date_add(current_date(),interval - 1 month)",nativeQuery = true)
+    public List<Ortodoncia> findNewsOrtodoncias();
 }

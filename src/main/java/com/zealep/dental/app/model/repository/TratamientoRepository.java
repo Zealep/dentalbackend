@@ -1,5 +1,6 @@
 package com.zealep.dental.app.model.repository;
 
+import com.zealep.dental.app.model.entities.Ortodoncia;
 import com.zealep.dental.app.model.entities.Tratamiento;
 import com.zealep.dental.app.model.entities.Tratamiento;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,6 +27,9 @@ public interface TratamientoRepository extends CrudRepository<Tratamiento,Long> 
     @Modifying
     @Query("update Tratamiento t set t.etapa=?1 where t.idTratamiento=?2 ")
     public void changeEtapa(String etapa,Long id);
+
+    @Query(value = "select * from tratamiento where fecha_registro >= date_add(current_date(),interval - 1 month)",nativeQuery = true)
+    public List<Tratamiento> findNewsTratamientos();
 
 
 }

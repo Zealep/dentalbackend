@@ -3,15 +3,17 @@ package com.zealep.dental.app.controller;
 import com.zealep.dental.app.model.entities.Ingreso;
 import com.zealep.dental.app.service.IIngresoService;
 import com.zealep.dental.app.util.RespuestaApi;
+import com.zealep.dental.app.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/ingreso")
 public class IngresoController {
@@ -28,16 +30,6 @@ public class IngresoController {
         }
     }
 
-	/*
-	@GetMapping(value = "/listarPageable", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<Paciente>> listarPagination(Pageable pageable) {
-		try {
-			return new ResponseEntity<Page<Paciente>>(pacienteService.listAllByPage(pageable), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	 */
 
     @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Ingreso> buscarPorId(@PathVariable Long id) {
@@ -75,6 +67,35 @@ public class IngresoController {
 
             ingresoService.deleteById(id);
             return new ResponseEntity<RespuestaApi>(new RespuestaApi("OK",null, ""), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/ingresosByDia", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> findIngresosPorDia() {
+        try {
+            return new ResponseEntity<Double>(ingresoService.findIngresosDia(LocalDate.now()), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/ingresosByMes", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> findIngresosPorMes() {
+        try {
+            return new ResponseEntity<Double>(ingresoService.findIngresosMes(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/rangeDates", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Ingreso>> findByRangesDates(@RequestParam("fechaInicio") String inicio,@RequestParam("fechaFin")String fin ) {
+        try {
+            LocalDate fechaInicio = Util.convertStringToLocalDate(inicio);
+            LocalDate fechaFin = Util.convertStringToLocalDate(fin);
+            return new ResponseEntity<List<Ingreso>>(ingresoService.findByRangeDates(fechaInicio,fechaFin), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

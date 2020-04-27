@@ -69,11 +69,17 @@ public class CitaServiceImpl implements ICitaService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        citaRepository.deleteById(id);
+        citaRepository.deleteLogicById(Constantes.ESTADO_INACTIVO,id);
     }
 
     @Override
     public boolean isExist(Cita c) {
         return findById(c.getIdCita())!=null;
+    }
+
+    @Override
+    @Transactional
+    public void changeEtapa(Long id, String etapa) {
+        citaRepository.changeStatus(etapa,id);
     }
 }

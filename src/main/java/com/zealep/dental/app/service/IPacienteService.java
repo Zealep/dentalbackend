@@ -1,5 +1,7 @@
 package com.zealep.dental.app.service;
 
+import java.io.ByteArrayInputStream;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.zealep.dental.app.model.entities.Paciente;
@@ -24,5 +26,13 @@ public interface IPacienteService {
 	byte[] obtenerFoto(String path);
 
 	String uploadFoto(MultipartFile file,Long id);
+
+	ByteArrayInputStream exportExcel() throws Exception;
+
+	List<Paciente> buscarCumpleaños();
+
+	List<Paciente> buscarPacientesNuevos();
+
+
 	
 }
