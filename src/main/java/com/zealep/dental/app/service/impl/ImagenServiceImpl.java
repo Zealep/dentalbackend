@@ -29,7 +29,7 @@ public class ImagenServiceImpl implements IImagenService {
     @Autowired
     ArchivoRepository archivoRepository;
 
-    @Value("url-path-images")
+    @Value("url-path-images-exam")
     private String URL_PATH_IMAGES_EXAM;
 
     @Override
