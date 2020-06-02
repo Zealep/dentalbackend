@@ -1,5 +1,7 @@
 package com.zealep.dental.app.util;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public interface Constantes {
 	
 	//cruds state
@@ -10,8 +12,5 @@ public interface Constantes {
 	public final String ETAPA_ACTIVA = "A";
 	public final String ETAPA_FINALIZADA= "F";
 
-	public final String URL_PATH_IMAGES="C:\\Users\\Usuario\\Pictures\\pacientes\\";
-	public final String URL_PATH_IMAGES_EXAM="C:\\Users\\Usuario\\Pictures\\examenes\\";
-	
 	
 }

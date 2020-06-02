@@ -8,6 +8,7 @@ import com.zealep.dental.app.service.IImagenService;
 import com.zealep.dental.app.util.Constantes;
 import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,9 @@ public class ImagenServiceImpl implements IImagenService {
 
     @Autowired
     ArchivoRepository archivoRepository;
+
+    @Value("url-path-images")
+    private String URL_PATH_IMAGES_EXAM;
 
     @Override
     @Transactional(readOnly = true)
@@ -58,7 +62,7 @@ public class ImagenServiceImpl implements IImagenService {
         Imagen img = imagenRepository.save(i);
         if (img.getIdImagen() != null) {
             try {
-                Path path = Paths.get(Constantes.URL_PATH_IMAGES_EXAM + i.getPaciente().getIdPaciente());
+                Path path = Paths.get(URL_PATH_IMAGES_EXAM + i.getPaciente().getIdPaciente());
                 boolean dirExist = Files.exists(path);
                 if (!dirExist) {
                     Files.createDirectories(path);

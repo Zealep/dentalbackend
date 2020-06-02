@@ -19,6 +19,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,9 @@ public class PacienteServiceImpl implements IPacienteService {
     PacienteRepository pacienteRepository;
 
     Path fileStorageLocation;
+
+    @Value("url-path-images")
+    private String URL_PATH_IMAGES;
 
     @Override
     @Transactional(readOnly = true)
@@ -116,7 +120,7 @@ public class PacienteServiceImpl implements IPacienteService {
             String name = p.getApellidos() + "-" + p.getNombres();
             name = name.trim().replace(" ", "-");
             name = name + "." + tipo;
-            String path = Constantes.URL_PATH_IMAGES + name;
+            String path = URL_PATH_IMAGES + name;
             p.setFoto(path);
             this.update(p);
             Path targetLocation = Paths.get(path);
