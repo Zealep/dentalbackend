@@ -72,7 +72,7 @@ public class TratamientoServiceImpl implements ITratamientoService {
     @Transactional
     public Tratamiento save(Tratamiento t) {
         t.setEtapa(Constantes.ETAPA_ACTIVA);
-        t.setEtapa(Constantes.ETAPA_ACTIVA);
+        t.setEstado(Constantes.ESTADO_ACTIVO);
         t.getTratamientoDetalles().forEach(x -> x.setTratamiento(t));
         return tratamientoRepository.save(t);
     }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import com.zealep.dental.app.model.entities.Imagen;
 import com.zealep.dental.app.util.ExcelUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -40,7 +41,7 @@ public class PacienteServiceImpl implements IPacienteService {
 
     Path fileStorageLocation;
 
-    @Value("url-path-images")
+    @Value("${url-path-images}")
     private String URL_PATH_IMAGES;
 
     @Override
@@ -95,8 +96,9 @@ public class PacienteServiceImpl implements IPacienteService {
         try {
             if(path!=null && !path.isEmpty()){
                 BufferedImage bImage = ImageIO.read(new File(path));
+                String format = path.substring(path.length()-3);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                ImageIO.write(bImage, "jpg", bos);
+                ImageIO.write(bImage, format, bos);
                 return bos.toByteArray();
             }
             else{
